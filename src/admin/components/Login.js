@@ -11,7 +11,7 @@ import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography'; 
+import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 function Copyright(props) {
@@ -34,6 +34,11 @@ export default function Login() {
     const { isLoggedIn } = useSelector((state) => state.auth);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate('/')
+        }
+    }, [navigate, isLoggedIn])
     const handleSubmit = (event) => {
         event.preventDefault();
         const objetuser = {

@@ -6,18 +6,15 @@ import Createarticle from './Createarticle';
 import Button from 'react-bootstrap/Button';
 import { delArticle } from '../../../features/articleSlice';
 import { toast } from 'react-toastify';
-import EditArticle from './EditArticle';
 
 const AffichearticleAdmin = () => {
 
     const { articles, isLoading, error } = useSelector((state) => state.storearticles);
-    const [selectedItem, setSelectedItem] = useState(null);
-    const [showModal, setShowModal] = useState(false);
     const dispatch = useDispatch();
     const handleDelete = (id, ref) => {
         if (window.confirm("supprimer Article O/N")) {
             dispatch(delArticle(id));
-            toast(`Article ${ref} Supprimé`, {
+            toast(`Article ${ref} Supprimé`, { 
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -28,12 +25,6 @@ const AffichearticleAdmin = () => {
             })
         }
     }
-
-    const handleEdit = (item) => {
-        setSelectedItem(item);
-        setShowModal(true);
-    };
-
 
     //should be memoized or stable
     const columns = useMemo(
@@ -76,7 +67,6 @@ const AffichearticleAdmin = () => {
                 size: 100,
                 Cell: ({ cell, row }) => (
                     <div >
-                        <EditArticle art={cell.row.original} />
                         <Button
                             onClick={(e) => {
                                 handleDelete(cell.row.original._id, cell.row.original.reference);

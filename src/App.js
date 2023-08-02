@@ -14,6 +14,8 @@ import Login from './admin/components/Login';
 import { Logout } from '@mui/icons-material';
 import Register from './admin/components/Register';
 import ProtectedRoutes from './admin/components/ProtectedRoute';
+import Nopage from './components/Nopage';
+import Banner from './components/styles/Banner';
 
 
 function App() {
@@ -22,20 +24,22 @@ function App() {
       <ToastContainer />
 
       <Router>
+        <NavScroll/>
         <Routes>
-        <Route element={<ProtectedRoutes/>}>
-        <Route path='/listeadmin' element={<AffichearticleAdmin />} />
-        <Route path="/cart" element={<Cart />} />
-        </Route>
-          <Route path="/" element={<NavScroll />} />
-          <Route path="/articles" element={<Listarticles />} />
-          <Route path="/categories" element={<ListeCategories />} />
-          <Route path="/scategories" element={<ListeScategories />} />
-          <Route path='/pay/:total' element={<StripePayment />} />
-          <Route path='/pdfcart' element={<PdfCart />} />
+          <Route element={<ProtectedRoutes />}>
+            <Route path='/listeadmin' element={<AffichearticleAdmin />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/articles" element={<Listarticles />} />
+            <Route path="/categories" element={<ListeCategories />} />
+            <Route path="/scategories" element={<ListeScategories />} />
+            <Route path='/pay/:total' element={<StripePayment />} />
+            <Route path='/pdfcart' element={<PdfCart />} />
+          </Route>
+          <Route path="/" element={<Banner />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
-          <Route path="/register" element={<Register />} /> 
+          <Route path="/register" element={<Register />} />
+          <Route path="*" element={<Nopage />} />
 
         </Routes>
       </Router>

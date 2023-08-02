@@ -41,6 +41,7 @@ export const authSlice = createSlice({
     reducers: {
         // Reducer comes here
         reset: (state) => {
+            state.user = null
             state.isLoading = false
             state.isSuccess = false
             state.isError = false
@@ -77,8 +78,10 @@ export const authSlice = createSlice({
                 state.isSuccess = true;
                 console.log(action.payload);
                 state.user = action.payload.user;
-                localStorage.setItem("CC_Token", action.payload.accessToken);
+                localStorage.setItem("CC_Token", action.payload.token);
+                localStorage.setItem('refresh_token', action.payload.refreshToken);
                 console.log(localStorage.getItem("CC_Token"))
+                console.log(localStorage.getItem("refresh_token"))
                 MySwal.fire({
                     icon: 'success',
                     title: 'Connection was successful',
@@ -90,11 +93,7 @@ export const authSlice = createSlice({
                 MySwal.fire({
                     icon: 'error',
                     title: 'Connection was refused',
-                }) 
-            })
-            .addCase(logout.fulfilled, (state, action) => {
-                state.isLoggedIn = false;
-                state.user = null;
+                })
             })
     }
 }

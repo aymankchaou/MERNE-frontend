@@ -39,6 +39,7 @@ export default function Login() {
             navigate('/')
         }
     }, [navigate, isLoggedIn])
+    
     const handleSubmit = (event) => {
         event.preventDefault();
         const objetuser = {

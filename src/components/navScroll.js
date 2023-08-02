@@ -9,30 +9,106 @@ import { Link } from 'react-router-dom';
 import Badge from '@mui/material/Badge';
 import IconButton from '@mui/material/IconButton';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import { logout, reset } from "../features/AuthSlice";
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
+import { useDispatch, useSelector } from "react-redux"
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
+import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 
 const NavScroll = () => {
-    const navigate = useNavigate();
+    const { user } = useSelector((state) => state.auth);
     const { cartTotalQuantity } = useSelector((state) => state.storecart);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+
+    const handleClickListItem = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const LogOutFunction = () => {
+        localStorage.removeItem("CC_Token")
+        dispatch(reset());
+        dispatch(logout())
+            .then(() => {
+                navigate("/login");
+            });
+    }
+
 
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
             <Container fluid>
+                <Stack direction="row" spacing={2}>
+                    <ListItem
+                        id="lock-button"
+                        aria-haspopup="listbox"
+                        aria-controls="lock-menu"
+                        aria-label=<Avatar alt={user?.email} src={user?.avatar} />
+                        aria-expanded={open ? 'true' : undefined}
+                        onClick={handleClickListItem}
+                    >
+                        <ListItemText
+                            primary=<Avatar alt={user?.email} src={user?.avatar} />
+                            secondary={user?.email}
+                        />
+                    </ListItem>
+                    <Menu
+                        id="lock-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        MenuListProps={{
+                            'aria-labelledby': 'lock-button',
+                            role: 'listbox',
+                        }}
+                    >
+                        <MenuItem
+                            onClick={() => { }}
+                        >
+                            <AccountCircleIcon />
+                            Profile
+                        </MenuItem>
+                        <MenuItem
+                            onClick={() => { }}
+                        >
+                            <SettingsApplicationsIcon />
+                            Settings
+                        </MenuItem>
+                        <MenuItem
+                            onClick={() => LogOutFunction()}
+                        >
+                            <LogoutIcon />
+                            Logout
+                        </MenuItem>
+                    </Menu>
+                </Stack>
                 <IconButton size="large"
                     edge="end"
                     aria-label="account of current user"
                     aria-haspopup="true"
                     color="error"
                     onClick={() => { navigate("/cart") }}
-                > 
+                >
                     <ShoppingCartIcon sx={{ fontSize: 40 }} />
                     <Badge badgeContent={cartTotalQuantity > 0 ? cartTotalQuantity : 0}
                         color="success">
                     </Badge>
                 </IconButton>
-                <Navbar.Brand as={Link} to="/articles">Navbar scroll</Navbar.Brand>
+                <Navbar.Brand as={Link} to="/">Navbar scroll</Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse id="navbarScroll">
                     <Nav

@@ -4,7 +4,15 @@ import categoriesReducer from "../features/categorieSlice"
 import scategoriesReducer from "../features/scategorieSlice";
 import cartSliceReducer from "../features/cartSlice";
 import authReducer from "../features/AuthSlice"
-
+import { persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
+import thunk from 'redux-thunk';
+const persistConfig = {
+    key: 'root',
+    version: 1,
+    storage,
+}
+const persistedReducer = persistReducer(persistConfig, authReducer)
 
 const store = configureStore({
     reducer: {
@@ -12,7 +20,9 @@ const store = configureStore({
         storecategories: categoriesReducer,
         storescategories: scategoriesReducer,
         storecart: cartSliceReducer,
-        auth: authReducer
-    }
+        auth: persistedReducer
+    },
+    middleware: [thunk]
+
 })
 export default store
